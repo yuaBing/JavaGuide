@@ -19,13 +19,11 @@ JMM（Java 内存模型）相关的问题比较多，也比较重要，于是我
 ## volatile 关键字
 
 ### 如何保证变量的可见性？
+1.对于加了volatile关键字的成员变量，在这个变量进行修改时，会直接将CPU高级缓存的数据写回主内存，对这个变量的读取也直接从主内存读取，从而保证了可见性
+
+2.在对volatile修饰的成员变量进行读写时，会插入内存屏障，而内存屏障可以禁止重排序的效果，从而可以保证有序性。
 
 在 Java 中，`volatile` 关键字可以保证变量的可见性，如果我们将变量声明为 **`volatile`** ，这就指示 JVM，这个变量是共享且不稳定的，每次使用它都到主存中进行读取。
-
-![](https://guide-blog-images.oss-cn-shenzhen.aliyuncs.com/github/javaguide/java/concurrent/jmm.png)
-
-![JMM(Java 内存模型)强制在主存中进行读取](https://guide-blog-images.oss-cn-shenzhen.aliyuncs.com/github/javaguide/java/concurrent/jmm2.png)
-
 `volatile` 关键字其实并非是 Java 语言特有的，在 C 语言里也有，它最原始的意义就是禁用 CPU 缓存。如果我们将一个变量使用 `volatile` 修饰，这就指示 编译器，这个变量是共享且不稳定的，每次使用它都到主存中进行读取。
 
 `volatile` 关键字能保证数据的可见性，但不能保证数据的原子性。`synchronized` 关键字两者都能保证。
